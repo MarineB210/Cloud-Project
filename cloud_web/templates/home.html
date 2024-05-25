@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Informations sur les développeurs</h1>
+    <ul>
+        {% for developer in developers %}
+            <li>{{ developer.name }} - {{ developer.role }} - {{ developer.bio }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Fonctionnalités de l'application</h2>
+    <ul>
+        {% for feature in features %}
+            <li>{{ feature.title }} - {{ feature.description }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'search' %}">Lancer une recherche</a>
+</body>
+</html>

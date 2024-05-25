@@ -1,0 +1,16 @@
+<!-- cloud_web/templates/cloud_web/results.html -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Résultats de recherche</title>
+</head>
+<body>
+    <h1>Résultats de recherche</h1>
+    <ul>
+        {% for result in results %}
+            <li>{{ result }}</li>  <!-- Modify this line to include actual result data -->
+        {% endfor %}
+    </ul>
+</body>
+</html>

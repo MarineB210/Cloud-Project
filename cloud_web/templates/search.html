@@ -1,0 +1,17 @@
+<!-- cloud_web/templates/cloud_web/search.html -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Recherche</title>
+</head>
+<body>
+    <h1>Recherche</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="query">Entrez votre recherche:</label>
+        <input type="text" id="query" name="query">
+        <button type="submit">Rechercher</button>
+    </form>
+</body>
+</html>
