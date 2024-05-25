@@ -2,9 +2,9 @@ from django.shortcuts import render
 from .models import Developer, ApplicationFeature
 
 def home(request):
-    developers = Developer.objects.all()
-    features = ApplicationFeature.objects.all()
-    return render(request, 'home.html', {'developers': developers, 'features': features})
+    #developers = Developer.objects.all()
+    #features = ApplicationFeature.objects.all()
+    return render(request, 'home.html', {})
 
 def search(request):
     if request.method == "POST":

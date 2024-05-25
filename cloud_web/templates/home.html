@@ -1,23 +1,59 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Accueil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #d54d2b, #fd5f29);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        nav {
+            background: #2c3e50;
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </head>
-<body>
-    <h1>Informations sur les développeurs</h1>
-    <ul>
-        {% for developer in developers %}
-            <li>{{ developer.name }} - {{ developer.role }} - {{ developer.bio }}</li>
-        {% endfor %}
-    </ul>
+    <body>
+        <nav>
+         <a href="{% url 'search' %}">Search</a>
+        </nav>
+        <div class="container">
+                <h1>Développé par le groupe 05</h1>
+            <ul>
+                <li>Marine Bodson - 210217 - MAB1 Sciences informatiques</li>
+                <li>Hugo Venturoso - 201745 - MAB2 Sciences informatiques</li>
+            </ul>
 
-    <h2>Fonctionnalités de l'application</h2>
-    <ul>
-        {% for feature in features %}
-            <li>{{ feature.title }} - {{ feature.description }}</li>
-        {% endfor %}
-    </ul>
+            <h2>Fonctionnalités de l'application</h2>
+            <ul>
+                {% for feature in features %}
+                    <li>{{ feature.title }} - {{ feature.description }}</li>
+                {% endfor %}
+            </ul>
 
-    <a href="{% url 'search' %}">Lancer une recherche</a>
-</body>
+            <a href="{% url 'search' %}">Lancer une recherche</a>
+        </div>
+    </body>
 </html>

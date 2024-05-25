@@ -1,17 +1,98 @@
-<!-- cloud_web/templates/cloud_web/search.html -->
-
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <title>Recherche</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #d54d2b, #fd5f29);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        nav {
+            background: #2c3e50;
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .descriptors {
+            text-align: left;
+            display: inline-block;
+            margin: 15px 0;
+        }
+        .descriptors label {
+            display: block;
+        }
+        .btn-submit {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Recherche</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="query">Entrez votre recherche:</label>
-        <input type="text" id="query" name="query">
-        <button type="submit">Rechercher</button>
-    </form>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+    </nav>
+    <div class="container">
+        <h1>Search engine app</h1>
+        <form>
+            <div class="form-group">
+                <label for="query-image">Query image:</label>
+                <input type="text" id="query-image" name="query-image" value="1.jpg">
+            </div>
+            <div class="form-group">
+                <label for="top">Top:</label>
+                <input type="number" id="top" name="top" value="10">
+            </div>
+            <div class="descriptors">
+                <label>Descriptors:</label>
+                <label><input type="checkbox" name="descriptor" value="SIFT"> SIFT</label>
+                <label><input type="checkbox" name="descriptor" value="VGG16"> VGG16</label>
+                <label><input type="checkbox" name="descriptor" value="ResNet50"> ResNet50</label>
+            </div>
+            <button type="submit" class="btn-submit">Send</button>
+        </form>
+    </div>
 </body>
 </html>
+
