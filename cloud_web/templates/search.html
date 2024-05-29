@@ -75,7 +75,8 @@
     </nav>
     <div class="container">
         <h1>Search engine app</h1>
-        <form>
+        <form method="post" action="{% url 'search' %}">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="query-image">Query image:</label>
                 <input type="text" id="query-image" name="query-image" value="1.jpg">

@@ -1,14 +1,83 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <title>Résultats de recherche</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #d54d2b, #fd5f29);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        nav {
+            background: #2c3e50;
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .descriptors {
+            text-align: left;
+            display: inline-block;
+            margin: 15px 0;
+        }
+        .descriptors label {
+            display: block;
+        }
+        .btn-submit {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Résultats de recherche</h1>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'search' %}">Search</a>
+    </nav>
+    <h1>Results of the search</h1>
     <ul>
-        {% for result in results %}
-            <li>{{ result }}</li>  <!-- Modify this line to include actual result data -->
-        {% endfor %}
+        huh
     </ul>
 </body>
 </html>
+

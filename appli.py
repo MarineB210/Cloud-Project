@@ -88,11 +88,11 @@ def display_rp(file_path: str):
     plt.legend()
     plt.show()
 
-def main(image_req: int):
+def main(image_req: int,top : int):
     if not (0 <= image_req <= 1000):
         raise ValueError("The number should be between 0 and 1000")
     
-    query_image_name, close_image_paths, close_image_names = search(image_req, 20)
+    query_image_name, close_image_paths, close_image_names = search(image_req, top)
     rp_file_path = "VGG_RP.txt"
     compute_rp(rp_file_path, 20, query_image_name, close_image_names)
     display_rp(rp_file_path)
@@ -103,4 +103,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     image_req = int(sys.argv[1])
-    main(image_req)
+    main(image_req,20)
