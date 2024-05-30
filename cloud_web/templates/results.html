@@ -88,7 +88,7 @@
         {% else %}
             <div class="info">
                 <p>Query Image:</p>
-                <img src="/media/image.orig/{{ query_image }}.jpg" alt="Queried Image" style="width: 300px; border-radius: 10px; margin-bottom: 20px;">
+                <img src="/media/image.orig/{{ query_image }}" alt="Queried Image" style="width: 300px; border-radius: 10px; margin-bottom: 20px;">
                 <p>Descriptors: {{ descriptors }}</p>
                 <p>Top: {{ top }}</p>
             </div>
@@ -96,7 +96,7 @@
                 {% for result in results_images %}
                 <div class="image-wrapper">
                     <img src="{{ result }}" alt="{{ result }}">
-                    <span>{{ result }}</span>
+                    <span>#{{ forloop.counter }}: {{ result }}</span>                
                 </div>
                 {% endfor %}
             </div>

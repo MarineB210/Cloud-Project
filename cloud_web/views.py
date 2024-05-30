@@ -31,7 +31,7 @@ def search(request):
 
 
 def results(request):
-    query_image = int(request.GET.get('query-image', '').split('.')[0])
+    query_image = request.GET.get('query-image', '')
     top = int(request.GET.get('top', ''))
     descriptors = request.GET.get('descriptors', '').split(',')
     print(f'Query image: {query_image}')  # Debug print statement
@@ -40,7 +40,7 @@ def results(request):
 
     if query_image and top and descriptors:
         # Process the data here
-        query_image_name, close_image_paths, close_image_names = search_images(query_image, top, descriptors[0])
+        query_image_name, close_image_paths, close_image_names = search_with_filename(query_image, top, descriptors[0])
         results_images = []
         for path in close_image_paths:
             results_images.append(os.path.join(settings.MEDIA_URL, path))
@@ -80,6 +80,10 @@ def get_k_nearest_neighbors(features: List[Tuple[str, np.ndarray]], test: Tuple[
     distances.sort(key=lambda x: x[2])
     return distances[:k]
 
+def search_with_filename(filename: str, top: int, descriptor: str) -> Tuple[str, List[str], List[str]]:
+    features = load_features_from_json("Features_train/VGG16.json")
+    image_req = next(i for i, (path, _) in enumerate(features) if os.path.basename(path) == filename)
+    return search_images(image_req, top, descriptor)
 
 def search_images(image_req: int, top: int, descriptor: str) -> Tuple[str, List[str], List[str]]:
     features = load_features_from_json(f"Features_train/{descriptor}.json")
