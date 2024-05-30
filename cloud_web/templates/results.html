@@ -1,3 +1,4 @@
+<!-- cloud_web/templates/results.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(to right, #d54d2b, #fd5f29);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,17 +19,20 @@
         .container {
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            max-width: 1200px;
+            margin: 20px;
         }
         nav {
             background: #2c3e50;
             padding: 10px;
-            position: absolute;
+            position: fixed;
             top: 0;
             width: 100%;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
         }
         nav a {
             color: white;
@@ -38,34 +42,37 @@
         nav a:hover {
             text-decoration: underline;
         }
-        .form-group {
-            margin: 15px 0;
+        h1 {
+            margin-bottom: 20px;
         }
-        input[type="text"], input[type="number"] {
-            padding: 10px;
-            width: 80%;
-            border-radius: 5px;
-            border: none;
+        .info {
+            margin-bottom: 20px;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        .descriptors {
-            text-align: left;
-            display: inline-block;
-            margin: 15px 0;
+        .image-container img {
+            margin: 10px;
+            width: 150px; /* Adjust size as needed */
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.2s;
         }
-        .descriptors label {
-            display: block;
+        .image-container img:hover {
+            transform: scale(1.05);
         }
-        .btn-submit {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #3498db;
+        .image-container .image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+        .image-container .image-wrapper span {
+            margin-top: 5px;
+            font-size: 12px;
             color: white;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -74,10 +81,29 @@
         <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'search' %}">Search</a>
     </nav>
-    <h1>Results of the search</h1>
-    <ul>
-        huh
-    </ul>
+    <div class="container">
+        <h1>Results for "{{ query_image }}"</h1>
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <div class="info">
+                <p>Query Image:</p>
+                <img src="/media/image.orig/{{ query_image }}.jpg" alt="Queried Image" style="width: 300px; border-radius: 10px; margin-bottom: 20px;">
+                <p>Descriptors: {{ descriptors }}</p>
+                <p>Top: {{ top }}</p>
+            </div>
+            <div class="image-container">
+                {% for result in results_images %}
+                <div class="image-wrapper">
+                    <img src="{{ result }}" alt="{{ result }}">
+                    <span>{{ result }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="plot-container">
+                <img src="/media/results_plot.png" alt="Results Plot" style="width:100%; border-radius: 10px; margin-top: 20px;">
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
-
