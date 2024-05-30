@@ -32,6 +32,11 @@ def get_k_nearest_neighbors(features: List[Tuple[str, np.ndarray]], test: Tuple[
     distances.sort(key=lambda x: x[2])
     return distances[:k]
 
+def search_with_filename(filename: str, top: int = 20) -> Tuple[str, List[str], List[str]]:
+    features = load_features_from_json("Features_train/VGG16.json")
+    image_req = next(i for i, (path, _) in enumerate(features) if os.path.basename(path) == filename)
+    return search(image_req, top)
+
 def search(image_req: int, top: int = 20) -> Tuple[str, List[str], List[str]]:
     features = load_features_from_json("Features_train/VGG16.json")
     neighbors = get_k_nearest_neighbors(features, features[image_req], top)
@@ -88,11 +93,12 @@ def display_rp(file_path: str):
     plt.legend()
     plt.show()
 
-def main(image_req: int,top : int):
+def main(image_req: int):
     if not (0 <= image_req <= 1000):
         raise ValueError("The number should be between 0 and 1000")
     
-    query_image_name, close_image_paths, close_image_names = search(image_req, top)
+    query_image_name, close_image_paths, close_image_names = search_with_filename(f"{image_req}.jpg", 20)
+
     rp_file_path = "VGG_RP.txt"
     compute_rp(rp_file_path, 20, query_image_name, close_image_names)
     display_rp(rp_file_path)
@@ -103,4 +109,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     image_req = int(sys.argv[1])
-    main(image_req,20)
+    main(image_req)
