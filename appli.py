@@ -32,13 +32,14 @@ def get_k_nearest_neighbors(features: List[Tuple[str, np.ndarray]], test: Tuple[
     distances.sort(key=lambda x: x[2])
     return distances[:k]
 
-def search_with_filename(filename: str, top: int = 20) -> Tuple[str, List[str], List[str]]:
-    features = load_features_from_json("Features_train/VGG16.json")
+def search_with_filename(filename: str, top: int = 20, model = "VGG16") -> Tuple[str, List[str], List[str]]:
+    # The model could be VGG16, ResNet50 or MobileNet
+    features = load_features_from_json(f'Features_train/{model}.json')
     image_req = next(i for i, (path, _) in enumerate(features) if os.path.basename(path) == filename)
-    return search(image_req, top)
+    return search(image_req, top, model)
 
-def search(image_req: int, top: int = 20) -> Tuple[str, List[str], List[str]]:
-    features = load_features_from_json("Features_train/VGG16.json")
+def search(image_req: int, top: int = 20, model = "VGG16") -> Tuple[str, List[str], List[str]]:
+    features = load_features_from_json(f'Features_train/{model}.json')
     neighbors = get_k_nearest_neighbors(features, features[image_req], top)
     
     query_image_path = features[image_req][0]
@@ -77,7 +78,7 @@ def compute_rp(file_path: str, top: int, query_image_name: str, close_image_name
     with open(file_path, 'w') as f:
         f.write("\n".join(rp))
 
-def display_rp(file_path: str):
+def display_rp(file_path: str, model: str):
     x, y = [], []
     with open(file_path, 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=' ')
@@ -86,7 +87,8 @@ def display_rp(file_path: str):
             y.append(float(row[1]))
 
     plt.figure()
-    plt.plot(y, x, 'C1', label="VGG16")
+    plt.plot(y, x, 'C1', label=f"{model}")
+
     plt.xlabel('Recall')
     plt.ylabel('Precision')
     plt.title("Recall/Precision Curve")
@@ -96,12 +98,13 @@ def display_rp(file_path: str):
 def main(image_req: int):
     if not (0 <= image_req <= 1000):
         raise ValueError("The number should be between 0 and 1000")
-    
-    query_image_name, close_image_paths, close_image_names = search_with_filename(f"{image_req}.jpg", 20)
+    models = ["VGG16", "ResNet50", "MobileNet"]
+    model = models[2]
+    query_image_name, close_image_paths, close_image_names = search_with_filename(f"{image_req}.jpg", 20, model)
 
-    rp_file_path = "VGG_RP.txt"
+    rp_file_path = f"{model}_RP.txt"
     compute_rp(rp_file_path, 20, query_image_name, close_image_names)
-    display_rp(rp_file_path)
+    display_rp(rp_file_path, model)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2 or not sys.argv[1].isdigit():
