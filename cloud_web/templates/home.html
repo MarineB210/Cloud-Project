@@ -40,20 +40,20 @@
          <a href="{% url 'search' %}">Search</a>
         </nav>
         <div class="container">
-                <h1>Développé par le groupe 05</h1>
+                <h1>Developed by group 05</h1>
             <ul>
                 <li>Marine Bodson - 210217 - MAB1 Sciences informatiques</li>
                 <li>Hugo Venturoso - 201745 - MAB2 Sciences informatiques</li>
             </ul>
 
-            <h2>Fonctionnalités de l'application</h2>
+            <h2>Application's functionalities</h2>
+            This application was developed in the context of the Cloud Computing course of 2023-2024.
             <ul>
-                {% for feature in features %}
-                    <li>{{ feature.title }} - {{ feature.description }}</li>
-                {% endfor %}
+                <li>Search engine based on an image</li>
+                <li>Three models supported for searches : MobileNet, VGG16, ResNet50</li>
+                <li>Shows the top images found and R/P curves based on the model chosen</li>
+                <li>Followed different steps to ensure the security of the application (cybersecurity)</li>
             </ul>
-
-            <a href="{% url 'search' %}">Lancer une recherche</a>
         </div>
     </body>
 </html>
