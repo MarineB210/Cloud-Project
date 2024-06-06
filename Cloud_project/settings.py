@@ -26,9 +26,6 @@ SECRET_KEY = 'django-insecure-8t4=@#t2hx7zt9xwfvgrxh1-k2en41k43)&3d6vzt39^kzuto(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -134,12 +131,17 @@ STATICFILES_DIRS = [
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '163.172.234.165']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
 
 LOGGING = {
     'version': 1,

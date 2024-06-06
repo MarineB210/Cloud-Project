@@ -32,12 +32,36 @@
         nav a:hover {
             text-decoration: underline;
         }
+        nav .right {
+            display: flex;
+            align-items: center;
+        }
+        nav .right form {
+            margin: 0;
+        }
+        nav .right button {
+            background-color: #e74c3c;
+            color: #ecf0f1;
+            border: none;
+            padding: 5px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        nav .right button:hover {
+            background-color: #c0392b;
+        }
 
     </style>
 </head>
     <body>
         <nav>
          <a href="{% url 'search' %}">Search</a>
+        <div class="right">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </div>
         </nav>
         <div class="container">
                 <h1>Developed by group 05</h1>
