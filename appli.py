@@ -27,8 +27,33 @@ def load_features_from_json(input_file: str) -> List[Tuple[str, np.ndarray]]:
 def euclidean_distance(l1: np.ndarray, l2: np.ndarray) -> float:
     return np.linalg.norm(l1 - l2)
 
-def get_k_nearest_neighbors(features: List[Tuple[str, np.ndarray]], test: Tuple[str, np.ndarray], k: int) -> List[Tuple[str, np.ndarray, float]]:
-    distances = [(name, feat, euclidean_distance(test[1], feat)) for name, feat in features]
+def chi_square_distance(l1: np.ndarray, l2: np.ndarray) -> float:
+    
+    epsilon = 1e-10
+    l2_safe = np.where(l2 == 0, epsilon, l2)
+    
+    return np.sum((l1 - l2)**2 / l2_safe)
+
+def bhattacharyya_distance(l1: np.ndarray, l2: np.ndarray) -> float:
+    
+    N_1 = np.mean(l1)
+    N_2 = np.mean(l2)
+
+    score = np.sum(np.sqrt(l1 * l2))
+
+    den = np.sqrt(N_1 * N_2 * len(l1) * len(l2))
+
+    distance = np.sqrt(1 - (score / den))
+
+    return distance
+
+def get_k_nearest_neighbors(features: List[Tuple[str, np.ndarray]], test: Tuple[str, np.ndarray], k: int, function= int) -> List[Tuple[str, np.ndarray, float]]:
+    if function == 0:
+        distances = [(name, feat, euclidean_distance(test[1], feat)) for name, feat in features]
+    elif function == 1:
+        distances = [(name, feat, chi_square_distance(test[1], feat)) for name, feat in features]
+    elif function == 2:
+        distances = [(name, feat, bhattacharyya_distance(test[1], feat)) for name, feat in features]
     distances.sort(key=lambda x: x[2])
     return distances[:k]
 
@@ -40,7 +65,9 @@ def search_with_filename(filename: str, top: int = 20, model = "VGG16") -> Tuple
 
 def search(image_req: int, top: int = 20, model = "VGG16") -> Tuple[str, List[str], List[str]]:
     features = load_features_from_json(f'Features_train/{model}.json')
-    neighbors = get_k_nearest_neighbors(features, features[image_req], top)
+    # distance_function = 0 for euclidean, 1 for chi-square, 2 for bhattacharyya
+    distance_function = 0 
+    neighbors = get_k_nearest_neighbors(features, features[image_req], top, distance_function)
     
     query_image_path = features[image_req][0]
     query_image_name = os.path.splitext(os.path.basename(query_image_path))[0]
