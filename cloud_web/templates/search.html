@@ -38,6 +38,24 @@
         nav a:hover {
             text-decoration: underline;
         }
+                nav .right {
+            display: flex;
+            align-items: center;
+        }
+        nav .right form {
+            margin: 0;
+        }
+        nav .right button {
+            background-color: #e74c3c;
+            color: #ecf0f1;
+            border: none;
+            padding: 5px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        nav .right button:hover {
+            background-color: #c0392b;
+        }
         .form-group {
             margin: 15px 0;
         }
@@ -79,7 +97,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="query-image">Query image:</label>
-                <input type="text" id="query-image" name="query-image" value="1.jpg">
+                <input type="text" id="query-image" name="query-image" value="1.jpg" pattern="^\d+\.jpg$" title="<integer>.jpg">
             </div>
             <div class="form-group">
                 <label for="top">Top:</label>
@@ -87,9 +105,9 @@
             </div>
             <div class="descriptors">
                 <label>Descriptors:</label>
-                <label><input type="checkbox" name="descriptor" value="SIFT"> SIFT</label>
-                <label><input type="checkbox" name="descriptor" value="VGG16"> VGG16</label>
-                <label><input type="checkbox" name="descriptor" value="ResNet50"> ResNet50</label>
+                <label><input type="radio" name="descriptor" value="MobileNet" required> MobileNet</label>
+                <label><input type="radio" name="descriptor" value="VGG16" required checked> VGG16</label>
+                <label><input type="radio" name="descriptor" value="ResNet50" required> ResNet50</label>
             </div>
             <button type="submit" class="btn-submit">Send</button>
         </form>

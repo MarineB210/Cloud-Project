@@ -7,16 +7,46 @@ import matplotlib.pyplot as plt
 
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
-from matplotlib.pyplot import imread
-
+from .forms import Loginform, RegisterForm
 from typing import List, Tuple
 
 
+@login_required
 def home(request):
     return render(request, 'home.html', {})
 
 
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = RegisterForm()
+    return render(request, 'accounts/register.html', {'form': form})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = Loginform(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = Loginform()
+    return render(request, 'accounts/login.html', {'form': form})
+
+
+@login_required
 def search(request):
     if request.method == "POST":
         query_image = request.POST.get('query-image', '')
@@ -30,6 +60,7 @@ def search(request):
     return render(request, 'search.html')
 
 
+@login_required
 def results(request):
     query_image = request.GET.get('query-image', '')
     top = int(request.GET.get('top', ''))
@@ -45,9 +76,8 @@ def results(request):
         for path in close_image_paths:
             results_images.append(os.path.join(settings.MEDIA_URL, path))
 
-        for descriptor in descriptors:
-            compute_rp(descriptor+'.txt', top, query_image_name, close_image_names)
-            display_rp(descriptor+'.txt')
+        compute_rp(descriptors[0]+'.txt', top, query_image_name, close_image_names)
+        display_rp(descriptors[0]+'.txt', descriptors[0])
 
         return render(request, 'results.html', {'query_image': query_image, 'top': top, 'descriptors': descriptors, 'results_images': results_images})
     else:
@@ -81,7 +111,7 @@ def get_k_nearest_neighbors(features: List[Tuple[str, np.ndarray]], test: Tuple[
     return distances[:k]
 
 def search_with_filename(filename: str, top: int, descriptor: str) -> Tuple[str, List[str], List[str]]:
-    features = load_features_from_json("Features_train/VGG16.json")
+    features = load_features_from_json(f"Features_train/{descriptor}.json")
     image_req = next(i for i, (path, _) in enumerate(features) if os.path.basename(path) == filename)
     return search_images(image_req, top, descriptor)
 
@@ -112,7 +142,7 @@ def compute_rp(file_path: str, top: int, query_image_name: str, close_image_name
         f.write("\n".join(rp))
 
 
-def display_rp(file_path: str):
+def display_rp(file_path: str, descriptor: str):
     x, y = [], []
     with open(file_path, 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=' ')
@@ -121,7 +151,7 @@ def display_rp(file_path: str):
             y.append(float(row[1]))
 
     plt.figure()
-    plt.plot(y, x, 'C1', label="VGG16")
+    plt.plot(y, x, 'C1', label=descriptor)
     plt.xlabel('Recall')
     plt.ylabel('Precision')
     plt.title("Recall/Precision Curve")
