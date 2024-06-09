@@ -38,7 +38,7 @@
         nav a:hover {
             text-decoration: underline;
         }
-                nav .right {
+        nav .right {
             display: flex;
             align-items: center;
         }
@@ -77,6 +77,18 @@
         .descriptors label {
             display: block;
         }
+        .descriptor-choice {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .descriptor-choice select {
+            margin-left: 10px;
+            border-radius: 5px;
+            padding: 5px;
+            border: none;
+            display: none;
+        }
         .btn-submit {
             padding: 10px 20px;
             border: none;
@@ -105,13 +117,68 @@
             </div>
             <div class="descriptors">
                 <label>Descriptors:</label>
-                <label><input type="radio" name="descriptor" value="MobileNet" required> MobileNet</label>
-                <label><input type="radio" name="descriptor" value="VGG16" required checked> VGG16</label>
-                <label><input type="radio" name="descriptor" value="ResNet50" required> ResNet50</label>
+                <div class="descriptor-choice">
+                    <label><input type="radio" name="descriptor" value="MobileNet" required> MobileNet</label>
+                    <label>
+                        <select name="metric">
+                            <option value="0">Euclidian</option>
+                            <option value="2">Bhattacharyya</option>
+                            <option value="1">Chi-Square</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="descriptor-choice">
+                    <label><input type="radio" name="descriptor" value="VGG16" required checked> VGG16</label>
+                    <label>
+                        <select name="metric">
+                            <option value="0">Euclidian</option>
+                            <option value="2">Bhattacharyya</option>
+                            <option value="1">Chi-Square</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="descriptor-choice">
+                    <label><input type="radio" name="descriptor" value="ResNet50" required> ResNet50</label>
+                    <label>
+                        <select name="metric">
+                            <option value="0">Euclidian</option>
+                            <option value="2">Bhattacharyya</option>
+                            <option value="1">Chi-Square</option>
+                        </select>
+                    </label>
+                </div>
             </div>
             <button type="submit" class="btn-submit">Send</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const radioButtons = document.querySelectorAll('input[name="descriptor"]');
+            const selects = document.querySelectorAll('.descriptor-choice select');
+
+            function showHideSelect() {
+                selects.forEach(select => {
+                    select.style.display = 'none';
+                });
+
+                const selectedRadio = document.querySelector('input[name="descriptor"]:checked');
+                if (selectedRadio) {
+                    const select = selectedRadio.closest('.descriptor-choice').querySelector('select');
+                    if (select) {
+                        select.style.display = 'inline-block';
+                    }
+                }
+            }
+
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', showHideSelect);
+            });
+
+            showHideSelect();
+        });
+    </script>
 </body>
 </html>
+
 
